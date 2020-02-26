@@ -23,7 +23,7 @@ func main() {
 	for scanner.Scan() {
 		pass := scanner.Text()
 		log.Println("Trying " + pass + "...")
-		out, _ := exec.Command(bcu, "cspswd:\"BIOS password\"", "nspswd:\"\"").CombinedOutput()
+		out, _ := exec.Command(bcu, "cspswd:\""+pass+"\"", "nspswd:\"\"").CombinedOutput()
 		res := string(out)
 		if !strings.Contains(res, "invalid") {
 			fmt.Println(pass)
