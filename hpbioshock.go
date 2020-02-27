@@ -10,6 +10,7 @@ import (
 	"os"
 	"os/exec"
 	"strings"
+	"time"
 )
 
 func main() {
@@ -23,14 +24,16 @@ func main() {
 	for scanner.Scan() {
 		pass := scanner.Text()
 		log.Println("Trying " + pass + "...")
-		out, _ := exec.Command(bcu, "cspswd:\""+pass+"\"", "nspswd:\"\"").CombinedOutput()
+		out, _ := exec.Command(bcu, "/cspwd:"+pass, "/nspwd:").CombinedOutput()
 		res := string(out)
-		if !strings.Contains(res, "invalid") {
+		if strings.Contains(res, "SUCCESS") {
 			fmt.Println(pass)
 			fmt.Println(res)
 			fmt.Println("*** SUCCESS ***")
 			return
 		}
+		//fmt.Println(res)
+		time.Sleep(10 * time.Second)
 	}
 	if err := scanner.Err(); err != nil {
 		log.Fatal(err)
